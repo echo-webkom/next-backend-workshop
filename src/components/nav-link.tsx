@@ -8,7 +8,18 @@ type NavLinkProps = {
   children: string;
 };
 
+/**
+ * NavLink act as wrapper to Next.js Link component.
+ * It will be undderlined when user is on the current page.
+ */
 export function NavLink({ href, children }: NavLinkProps) {
+  /**
+   * Get the current pathname of the page.
+   *
+   * Example: https://example.com -> "/"
+   * Example: https://example.com/about -> "/about"
+   * Example: https://example.com/about?foo=bar -> "/about"
+   */
   const pathname = usePathname();
 
   const isActive = pathname === href;

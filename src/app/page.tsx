@@ -4,17 +4,20 @@ import { getSession } from "@/lib/session";
 
 export default async function Home() {
   const session = await getSession();
+
+  // Get all posts from the database
   const posts = await db.query.posts.findMany();
 
   return (
     <Container>
-      <h1 className="text-3xl font-bold">Hello world</h1>
+      <h1 className="text-3xl font-bold">NextJS Backend Auth Demo</h1>
 
+      {/* Display current session status */}
       <div className="mb-4">
         {session ? (
-          <p>Du er logget inn som: {session.username}</p>
+          <p>You are logged in as: {session.username}</p>
         ) : (
-          <p>Du er ikke logget inn...</p>
+          <p>You are not logged in...</p>
         )}
       </div>
 

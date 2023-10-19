@@ -9,12 +9,8 @@ import { COOKIE_KEY } from "@/constants";
 export async function GET() {
   const cookieStore = cookies();
 
-  cookieStore.set(COOKIE_KEY, "", {
-    expires: new Date(0),
-    path: "/",
-    sameSite: "lax",
-    httpOnly: process.env.NODE_ENV === "production",
-  });
+  // Eat the cookie
+  cookieStore.delete(COOKIE_KEY);
 
   return new Response("You are signed out", { status: 200 });
 }

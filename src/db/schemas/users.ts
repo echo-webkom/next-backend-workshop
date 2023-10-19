@@ -14,6 +14,7 @@ export const users = pgTable(
     password: varchar("password").notNull(),
   },
   (table) => ({
+    // This is the primary key of the table
     pk: primaryKey(table.id),
 
     // This is a unique index on the username column

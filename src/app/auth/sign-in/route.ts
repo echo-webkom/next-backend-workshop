@@ -4,7 +4,6 @@ import { COOKIE_KEY } from "@/constants";
 import jwt from "jsonwebtoken";
 import { db } from "@/db/drizzle";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 
 /**
  * Sign in route
@@ -20,6 +19,7 @@ export async function POST(req: NextRequest) {
       password: string;
     };
 
+    // Get the user with the same username
     const user = await db.query.users.findFirst({
       where: (user) => eq(user.username, payload.username),
     });
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       return new Response("Wrong password", { status: 400 });
     }
 
+    // Create a JWT
     const token = jwt.sign(
       { sub: user.id, iat: Math.floor(Date.now() / 1000) },
       process.env.JWT_SECRET!
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
 
     const cookieStore = cookies();
 
+    // Set the JWT as a cookie
     cookieStore.set(COOKIE_KEY, token, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       path: "/",
@@ -46,10 +48,9 @@ export async function POST(req: NextRequest) {
       sameSite: "lax",
     });
 
-    revalidatePath("/");
-
     return new Response("You are signed in", { status: 200 });
   } catch (e) {
+    // If no json body or invalid json body
     if (e instanceof SyntaxError) {
       return new Response("Bad request", { status: 400 });
     }

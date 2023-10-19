@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
       password: string;
     };
 
+    // Check if any user has the same username
     const exisitingUser = await db.query.users.findFirst({
       where: (user) => eq(user.username, payload.username),
     });
@@ -29,6 +30,7 @@ export async function POST(req: NextRequest) {
       return new Response("User already exists", { status: 400 });
     }
 
+    // Create the user
     const user = await db
       .insert(users)
       .values({
@@ -42,6 +44,7 @@ export async function POST(req: NextRequest) {
       return new Response("User creation failed", { status: 500 });
     }
 
+    // Create a JWT
     const token = jwt.sign(
       { sub: user.id, iat: Math.floor(Date.now() / 1000) },
       process.env.JWT_SECRET!
@@ -49,6 +52,7 @@ export async function POST(req: NextRequest) {
 
     const cookieStore = cookies();
 
+    // Set the JWT as a cookie
     cookieStore.set(COOKIE_KEY, token, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
       path: "/",
@@ -58,6 +62,7 @@ export async function POST(req: NextRequest) {
 
     return new Response("You are signed up", { status: 200 });
   } catch (e) {
+    // If no json body or invalid json body
     if (e instanceof SyntaxError) {
       return new Response("Bad request", { status: 400 });
     }

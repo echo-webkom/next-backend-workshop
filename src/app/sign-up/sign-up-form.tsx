@@ -11,17 +11,31 @@ export function SignUpForm() {
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    /**
+     * Prevent the default form submission behavior
+     *
+     * Since the form is submitted via JavaScript, we
+     * don't want the browser to submit the form
+     * automatically.
+     */
     e.preventDefault();
 
+    // Don't submit if passwords don't match
     if (password !== passwordRepeat) {
       return;
     }
 
+    /**
+     * Make a POST request to the server to sign up the user.
+     * If username and password are correct, the server will
+     * set a session cookie in the browser.
+     */
     await fetch("/auth/sign-up", {
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
 
+    // Rerun the RSC to redirect the user to the home page
     router.refresh();
   };
 

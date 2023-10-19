@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 export default async function SignUp() {
   const session = await getSession();
 
+  // Redirect to home page if user is already signed in
   if (session) {
     return redirect("/");
   }

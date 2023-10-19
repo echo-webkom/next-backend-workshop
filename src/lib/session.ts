@@ -3,7 +3,11 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { db } from "@/db/drizzle";
 import { eq } from "drizzle-orm";
-
+/**
+ * Gets the user from the JWT. If the JWT is invalid or expired, it will return null.
+ *
+ * @returns the user if the user is signed in
+ */
 export async function getSession() {
   try {
     const cookieStore = cookies();
