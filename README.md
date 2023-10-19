@@ -42,8 +42,14 @@ Til dette burde du ha følgende installert:
    ```
 
 1. (Om du ikke har kjør migrasjoner) Kjør migrasjoner
+
    ```sh
    pnpm db:migrate
+   ```
+
+1. (Valgfiritt) Seed databasen med testdata
+   ```sh
+   pnpm db:seed
    ```
 
 ## Kjør lokalt 🚀
