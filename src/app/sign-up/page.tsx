@@ -1,0 +1,20 @@
+import { Container } from "@/components/container";
+import { SignUpForm } from "./sign-up-form";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
+
+export default async function SignUp() {
+  const session = await getSession();
+
+  if (session) {
+    return redirect("/");
+  }
+
+  return (
+    <Container>
+      <h1 className="text-3xl font-bold mb-4">Sign up</h1>
+
+      <SignUpForm />
+    </Container>
+  );
+}
