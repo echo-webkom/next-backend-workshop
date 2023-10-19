@@ -99,7 +99,7 @@ Inneholder konfigurasjon for Tailwind. Her kan du legge til nye farge-variabler,
 
 ### Lag en ny side som er beskyttet av autentisering
 
-### Lag en ny side der du kan lage et nytt innlegg
+### Lag en ny side der du kan lage et nytt innlegg, og sette bruker som "author" om man er logget inn.
 
 <details><summary>Hint 💭</summary>
 
@@ -109,10 +109,12 @@ Lag en ny side fil `src/app/new-post/page.tsx` med et skjema som tar inn tittel 
 
 </details>
 
+### Lag en ny side som viser hele innlegget med eier av innlegget (om den har)
+
 ### Krypter passordet før det lagres i databasen (med en hash)
 
 <details><summary>Hint 💭</summary>
 
-Bruk `node:crypto` til å lage en hash av passordet før det lagres i databasen.
+Bruk `node:crypto` (https://nodejs.org/api/crypto.html) til å lage en hash av passordet før det lagres i databasen.
 
 </details>
