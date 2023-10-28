@@ -21,11 +21,16 @@ export default async function Home() {
         )}
       </div>
 
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.title}</li>
-        ))}
-      </ul>
+      {/* Display all posts */}
+      {posts.length > 0 ? (
+        <ul>
+          {posts.map((post) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No posts found...</p>
+      )}
     </Container>
   );
 }

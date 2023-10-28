@@ -1,17 +1,6 @@
 import "dotenv/config";
 import * as schema from "@/db/schemas";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-
-// Create connection to the database
-const pg = postgres(process.env.DATABASE_URL!, {
-  max: 1,
-});
-
-// Initialize drizzle client
-const db = drizzle(pg, {
-  schema,
-});
+import { db } from "@/db/drizzle";
 
 const { users, posts } = schema;
 

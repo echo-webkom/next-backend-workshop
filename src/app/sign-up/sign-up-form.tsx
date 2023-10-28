@@ -10,6 +10,8 @@ export function SignUpForm() {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     /**
      * Prevent the default form submission behavior
@@ -30,17 +32,25 @@ export function SignUpForm() {
      * If username and password are correct, the server will
      * set a session cookie in the browser.
      */
-    await fetch("/auth/sign-up", {
+    const resp = await fetch("/auth/sign-up", {
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
 
-    // Rerun the RSC to redirect the user to the home page
-    router.refresh();
+    // Handle successful sign up
+    if (resp.status === 200) {
+      // Rerun the RSC to redirect the user to the home page
+      router.refresh();
+      return;
+    }
+
+    setError(await resp.text());
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && <div className="text-red-500">{error}</div>}
+
       <div className="flex flex-col gap-1">
         <label htmlFor="username">Username</label>
         <input

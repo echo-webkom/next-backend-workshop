@@ -1,6 +1,4 @@
-import { cookies } from "next/headers";
 import { NavLink } from "./nav-link";
-import { COOKIE_KEY } from "@/constants";
 import { SignOutButton } from "./sign-out-button";
 
 const routes = [

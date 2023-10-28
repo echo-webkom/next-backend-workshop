@@ -124,3 +124,21 @@ Lag en ny side fil `src/app/new-post/page.tsx` med et skjema som tar inn tittel 
 Bruk `node:crypto` (https://nodejs.org/api/crypto.html) til å lage en hash av passordet før det lagres i databasen.
 
 </details>
+
+### Gjør om api-rutene om til server actions
+
+<details><summary>Hint 💭</summary>
+
+Lag en ny fil i `actions/`-mappen.
+
+```ts
+"use server";
+
+export async function signIn(username: string, password: string) {
+  // ...
+}
+```
+
+</details>
+
+### Deploy til Vercel med Vercel Postgres
