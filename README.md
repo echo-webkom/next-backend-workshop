@@ -1,5 +1,7 @@
 # Workshop med Next.js backend, auth (jwt), Drizzle og PostgreSQL
 
+Se branchen [`solutions`](https://github.com/echo-webkom/next-backend-workshop/tree/solutions) for eksempler på hvordan løse oppgavene nederst.
+
 ## Forutsetninger 📝
 
 Til dette burde du ha følgende installert:
