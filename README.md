@@ -142,3 +142,56 @@ export async function signIn(username: string, password: string) {
 </details>
 
 ### Deploy til Vercel med Vercel Postgres
+
+## Svar på oppgaver 📝
+
+### Lag en ny side som er beskyttet av autentisering
+
+Her kan du bruker `getSession` funksjonen laget i `lib/session.ts` til å sjekke om brukeren er logget inn. Deretter kan du bruker `redirect()` til å sende brukeren til `/sign-in` om de ikke er logget inn.
+
+Se `src/app/protected/page.tsx` for et eksempel.
+
+### Lag en ny side der du kan lage et nytt innlegg, og sette bruker som "author" om man er logget inn.
+
+Man kan først begynne med å lage et `POST`-endepunkt i som henter ut `title` og `body` fra `request.json()`. Deretter kan man bruke `getSession` til å finne ut hvem som gjorde requesten og sette `session.id` som `authorId` i databasen.
+
+For frontenden kan man lage en ny side med et skjema som tar inn `title` og `body` og sender det til `POST`-endepunktet. Her må man lage en funksjon til `onSubmit` som sender dataen til `POST`-endepunktet. Dette blir gjort med `fetch`-funksjonen som er innebygd i nettleseren.
+
+Se `src/app/api/post/create/route.ts` for eksempel på `POST`-endepunktet.
+Se `src/app/posts/create/page.tsx` og `src/app/posts/create/create-post-form.tsx` for eksempel på frontenden.
+
+Til denne oppgaven laget jeg også en side `src/app/posts/page.tsx` som viser alle innleggene i databasen.
+
+### Lag en ny side som viser hele innlegget med eier av innlegget (om den har)
+
+Her kan man lage en "dynamic path". Dette er en del av URLen som kan endre seg, go vise forskjellig innhold. I dette tilfellet kan vi bruke `id`-en til innlegget.
+
+Ved å da hente ut `id`-en fra URLen kan vi bruke den til å hente ut innlegget fra databasen.
+
+For denne oppgaven fjernet jeg også visning av brødtekst på `src/app/posts/page.tsx` og la til en link til `src/app/posts/[id]/page.tsx` som viser hele innlegget.
+
+Se `src/app/posts/[id]/page.tsx` for eksempel på en "dynamic path".
+
+### Krypter passordet før det lagres i databasen (med en hash)
+
+Her kan vi bruke et krypterings bibliotek for å lage en hash av passordet før det lagres i databasen. Dette gjør at om noen får tak i databasen, så vil de ikke kunne se passordet til brukerne. Les mer om hvorfor dette er viktig her: https://www.owasp.org/index.php/Password_Storage_Cheat_Sheet
+
+For denne oppgaven brukte jeg et bibliotek som heter `bcryptjs`. Dette er en implementasjon av `bcrypt` som er skrevet i JavaScript. `bcrypt` gir oss funksjoner for både å lage en hash og sjekke om en hash matcher et passord.
+
+Se oppdatert versjon i `src/app/auth/sign-up/route.ts` og `src/app/sign-in/route.ts`.
+
+Du kan lage ned `bcryptjs` med `pnpm add bcryptjs` og `pnpm add -D @types/bcryptjs`.
+
+### Gjør om api-rutene om til server actions
+
+Her kan vi lage en ny fil i `actions/`-mappen. Denne filen kan vi bruke til å lage funksjoner som kan brukes i både frontenden og backenden. For å gjøre dette må vi bruke `use server` øverst i filen.
+
+```ts
+"use server";
+
+export async function signIn(username: string, password: string) {
+  // ...
+}
+```
+
+Se `src/actions/auth.ts` for eksempel.

@@ -14,6 +14,8 @@
     "db:seed": "tsx ./drizzle/seed.ts"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.5",
+    "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.28.6",
     "jsonwebtoken": "^9.0.2",
     "next": "14.0.0",

@@ -1,30 +1,16 @@
-import { NextRequest } from "next/server";
-import { cookies } from "next/headers";
 import { COOKIE_KEY } from "@/constants";
-import jwt from "jsonwebtoken";
 import { db } from "@/db/drizzle";
-import { eq } from "drizzle-orm";
 import { users } from "@/db/schemas";
+import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-/**
- * Sign up route
- *
- * Should check if any users has the same username.
- * If not create the new user.
- * Create a JWT and set it as a cookie.
- * Redirect to the home page
- */
-export async function POST(req: NextRequest) {
+export async function signIn(username: string, password: string) {
   try {
-    const payload = (await req.json()) as {
-      username: string;
-      password: string;
-    };
-
     // Check if any user has the same username
     const exisitingUser = await db.query.users.findFirst({
-      where: (user) => eq(user.username, payload.username),
+      where: (user) => eq(user.username, username),
     });
 
     if (exisitingUser) {
@@ -32,20 +18,23 @@ export async function POST(req: NextRequest) {
     }
 
     // Hash the password
-    const hashedPassword = bcrypt.hashSync(payload.password, 12);
+    const hashedPassword = bcrypt.hashSync(password, 12);
 
     // Create the user
     const user = await db
       .insert(users)
       .values({
-        username: payload.username,
+        username,
         password: hashedPassword,
       })
       .returning()
       .then((res) => res[0] ?? null);
 
     if (!user) {
-      return new Response("User creation failed", { status: 500 });
+      return {
+        success: false,
+        message: "User creation failed",
+      };
     }
 
     // Create a JWT
@@ -64,13 +53,14 @@ export async function POST(req: NextRequest) {
       sameSite: "lax",
     });
 
-    return new Response("You are signed up", { status: 200 });
+    return {
+      success: true,
+      message: "You are signed in",
+    };
   } catch (e) {
-    // If no json body or invalid json body
-    if (e instanceof SyntaxError) {
-      return new Response("Bad request", { status: 400 });
-    }
-
-    return new Response("Internal server error", { status: 500 });
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
   }
 }

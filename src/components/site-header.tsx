@@ -7,6 +7,14 @@ const routes = [
     path: "/",
   },
   {
+    label: "Posts",
+    path: "/posts",
+  },
+  {
+    label: "Protected page",
+    path: "/protected",
+  },
+  {
     label: "Sign in",
     path: "/sign-in",
   },

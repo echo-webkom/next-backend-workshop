@@ -4,6 +4,7 @@ import { COOKIE_KEY } from "@/constants";
 import jwt from "jsonwebtoken";
 import { db } from "@/db/drizzle";
 import { eq } from "drizzle-orm";
+import bcrypt from "bcryptjs";
 
 /**
  * Sign in route
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
       return new Response("User doesn't exist", { status: 400 });
     }
 
-    if (user.password !== payload.password) {
+    if (!bcrypt.compareSync(payload.password, user.password)) {
       return new Response("Wrong password", { status: 400 });
     }
 
